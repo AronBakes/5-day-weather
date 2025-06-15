@@ -7,13 +7,13 @@ This project is a solution for a coding test by R6 Digital that required an appl
 ## Features
 
 * **Web UI:** A reactive web interface built using React.
-    * [cite_start]Features a dropdown menu with the following pre-defined cities: Brisbane, Gold Coast, and Sunshine Coast. 
-    * [cite_start]On selecting a city, the new forecast data is loaded reactively without requiring a page refresh or form submission. 
+    * Features a dropdown menu with the following pre-defined cities: Brisbane, Gold Coast, and Sunshine Coast. 
+    * On selecting a city, the new forecast data is loaded reactively without requiring a page refresh or form submission. 
 * **Console Command:** A Laravel Artisan command for retrieving forecasts from the terminal.
-    * [cite_start]Can be executed with the format `php artisan forecast {cities?*}`. 
-    * [cite_start]Displays a 5-day forecast in a clean, tabulated format. 
-    * [cite_start]If no cities are provided as arguments, the command interactively prompts the user for input. 
-* [cite_start]**Graceful Error Handling:** Both the web application and the console command are designed to handle invalid inputs and API errors gracefully without crashing. 
+    * Can be executed with the format `php artisan forecast {cities?*}`. 
+    * Displays a 5-day forecast in a clean, tabulated format. 
+    * If no cities are provided as arguments, the command interactively prompts the user for input. 
+* **Graceful Error Handling:** Both the web application and the console command are designed to handle invalid inputs and API errors gracefully without crashing. 
 
 ## Technologies Used
 
@@ -101,5 +101,5 @@ To run the full web application, you need to run both the backend and frontend s
 * **Decoupled Architecture:** I chose to create two separate project folders (weather-api for Laravel and weather-ui for React). This approach makes each part of the application easier to develop, test, and maintain independently.
 * **Flexible API Key Handling:** The console command was enhanced to provide flexible API key management. It checks for the key in the following order of priority: 1) A key provided via the `--key=` option. 2) The `WEATHERBIT_API_KEY` value in the `.env` file. 3) As a final fallback, it interactively prompts the user to enter a key if neither of the first two is found.
 * **Console Command Flexibility:** The requirements for the Web UI explicitly limit the cities to a pre-defined list. However, the requirements for the console command do not mention such a restriction. Therefore, I made the design decision that the console command should be a more flexible tool capable of fetching a forecast for any city supported by the Weatherbit API.
-* [cite_start]**Error Handling Strategy:** To meet the requirement for graceful error handling, `try...catch` blocks were implemented in the backend controller and the console command. In the React frontend, the promise chain from the `fetch` call is used to catch non-200 responses. In all cases, the application displays a user-friendly message rather than crashing.
+* **Error Handling Strategy:** To meet the requirement for graceful error handling, `try...catch` blocks were implemented in the backend controller and the console command. In the React frontend, the promise chain from the `fetch` call is used to catch non-200 responses. In all cases, the application displays a user-friendly message rather than crashing.
 * **External API Behavior:** The application relies on the Weatherbit API for all forecast data, including handling ambiguous city names. I made the decision to restrict the input to the 3 cities listed in the coding test description.
