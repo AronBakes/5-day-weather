@@ -29,7 +29,7 @@ Follow these instructions to set up the project locally.
 
 1.  **Clone the Repository**
     ```bash
-    git clone [https://github.com/AronBakes/5-day-weather.git](https://github.com/AronBakes/5-day-weather.git)
+    git clone https://github.com/AronBakes/5-day-weather
     cd 5-day-weather
     ```
 
