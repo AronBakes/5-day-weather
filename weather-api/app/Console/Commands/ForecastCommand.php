@@ -12,7 +12,7 @@ class ForecastCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'forecast {cities?*}';
+    protected $signature = 'forecast {cities?*} {--key= : The Weatherbit API key to use}';
 
     /**
      * The console command description.
@@ -24,10 +24,8 @@ class ForecastCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+   public function handle()
     {
-         // Define the only cities you want to allow
-        $allowedCities = ['brisbane', 'gold coast', 'sunshine coast'];
         $cities = $this->argument('cities');
 
         // If no cities are provided, interactively prompt the user.
@@ -36,18 +34,33 @@ class ForecastCommand extends Command
             $cities = array_map('trim', explode(',', $cityInput));
         }
 
-        $apiKey = env('WEATHERBIT_API_KEY');
+        // --- API Key Logic ---
+        // 1. Try to get the key from the command-line option first.
+        $apiKey = $this->option('key');
+
+        // 2. If the --key option was not provided, fall back to the .env file.
         if (!$apiKey) {
-            $this->error('Weather API key is not configured.');
+            $apiKey = env('WEATHERBIT_API_KEY');
+        }
+
+        // 3. If there's still no key, ask the user for it as a last resort.
+        if (!$apiKey) {
+            $apiKey = trim($this->ask('API Key not found. Please enter your Weatherbit API key'));
+        }
+
+        // 4. If, after all that, we still have no key, then we exit.
+        if (!$apiKey) {
+            $this->error('No API key provided. Aborting.');
             return Command::FAILURE;
         }
 
+        // --- Forecast Fetching Logic ---
         $this->info('Fetching weather forecasts...');
 
         $forecasts = [];
         foreach ($cities as $city) {
             if (empty($city)) continue;
-
+            
             try {
                 $response = Http::get('https://api.weatherbit.io/v2.0/forecast/daily', [
                     'city' => $city,
